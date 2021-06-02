@@ -592,19 +592,7 @@ class LoginController extends React.PureComponent {
                                 autoFocus={true}
                             />
                         </div>
-                        <div className={'form-group' + errorClass}>
-                            <LocalizedInput
-                                id='loginPassword'
-                                type='password'
-                                className='form-control'
-                                ref={this.passwordInput}
-                                name='password'
-                                value={this.state.password}
-                                onChange={this.handlePasswordChange}
-                                placeholder={{ id: t('login.password'), defaultMessage: 'Password' }}
-                                spellCheck='false'
-                            />
-                        </div>
+                        
                         <div className='form-group'>
                             <button
                                 id='loginButton'
