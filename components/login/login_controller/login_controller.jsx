@@ -564,7 +564,8 @@ class LoginController extends React.PureComponent {
                         />
                         <div className={'form-group' + errorClass}>
                             <input
-                                id='loginId'
+                                //id='loginId'
+                                id='loginIdChange'
                                 className='form-control'
                                 ref={this.loginIdInput}
                                 name='loginId'
