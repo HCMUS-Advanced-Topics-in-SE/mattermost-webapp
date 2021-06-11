@@ -3,13 +3,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Tooltip, Overlay} from 'react-bootstrap';
-import {FormattedMessage, injectIntl} from 'react-intl';
+import { Tooltip, Overlay } from 'react-bootstrap';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import classNames from 'classnames';
 
-import {Permissions} from 'mattermost-redux/constants';
-import {memoizeResult} from 'mattermost-redux/utils/helpers';
-import {displayUsername} from 'mattermost-redux/utils/user_utils';
+import { Permissions } from 'mattermost-redux/constants';
+import { memoizeResult } from 'mattermost-redux/utils/helpers';
+import { displayUsername } from 'mattermost-redux/utils/user_utils';
 
 import 'bootstrap';
 
@@ -21,7 +21,7 @@ import StatusIcon from 'components/status_icon';
 import ArchiveIcon from 'components/widgets/icons/archive_icon';
 import SharedChannelIndicator from 'components/shared_channel_indicator';
 import ChannelPermissionGate from 'components/permissions_gates/channel_permission_gate';
-import {ChannelHeaderDropdown} from 'components/channel_header_dropdown';
+import { ChannelHeaderDropdown } from 'components/channel_header_dropdown';
 import MenuWrapper from 'components/widgets/menu/menu_wrapper';
 import GuestBadge from 'components/widgets/badges/guest_badge';
 import BotBadge from 'components/widgets/badges/bot_badge';
@@ -34,7 +34,7 @@ import {
     NotificationLevels,
     RHSStates,
 } from 'utils/constants';
-import {intlShape} from 'utils/react_intl';
+import { intlShape } from 'utils/react_intl';
 import * as Utils from 'utils/utils';
 
 import ChannelHeaderPlug from 'plugins/channel_header_plug';
@@ -44,8 +44,8 @@ import CustomStatusText from 'components/custom_status/custom_status_text';
 
 import HeaderIconWrapper from './components/header_icon_wrapper';
 
-const headerMarkdownOptions = {singleline: true, mentionHighlight: false, atMentions: true};
-const popoverMarkdownOptions = {singleline: false, mentionHighlight: false, atMentions: true};
+const headerMarkdownOptions = { singleline: true, mentionHighlight: false, atMentions: true };
+const popoverMarkdownOptions = { singleline: false, mentionHighlight: false, atMentions: true };
 
 class ChannelHeader extends React.PureComponent {
     static propTypes = {
@@ -105,10 +105,10 @@ class ChannelHeader extends React.PureComponent {
         };
 
         this.getHeaderMarkdownOptions = memoizeResult((channelNamesMap) => (
-            {...headerMarkdownOptions, channelNamesMap}
+            { ...headerMarkdownOptions, channelNamesMap }
         ));
         this.getPopoverMarkdownOptions = memoizeResult((channelNamesMap) => (
-            {...popoverMarkdownOptions, channelNamesMap}
+            { ...popoverMarkdownOptions, channelNamesMap }
         ));
     }
 
@@ -138,24 +138,24 @@ class ChannelHeader extends React.PureComponent {
     };
 
     unmute = () => {
-        const {actions, channel, channelMember, currentUser} = this.props;
+        const { actions, channel, channelMember, currentUser } = this.props;
 
         if (!channelMember || !currentUser || !channel) {
             return;
         }
 
-        const options = {mark_unread: NotificationLevels.ALL};
+        const options = { mark_unread: NotificationLevels.ALL };
         actions.updateChannelNotifyProps(currentUser.id, channel.id, options);
     };
 
     mute = () => {
-        const {actions, channel, channelMember, currentUser} = this.props;
+        const { actions, channel, channelMember, currentUser } = this.props;
 
         if (!channelMember || !currentUser || !channel) {
             return;
         }
 
-        const options = {mark_unread: NotificationLevels.MENTION};
+        const options = { mark_unread: NotificationLevels.MENTION };
         actions.updateChannelNotifyProps(currentUser.id, channel.id, options);
     };
 
@@ -182,7 +182,7 @@ class ChannelHeader extends React.PureComponent {
     }
 
     setTitleMenuOpen = (open) => {
-        this.setState({titleMenuOpen: open});
+        this.setState({ titleMenuOpen: open });
     }
 
     showEditChannelHeaderModal = () => {
@@ -190,11 +190,11 @@ class ChannelHeader extends React.PureComponent {
             this.headerOverlayRef.current.hide();
         }
 
-        const {actions, channel} = this.props;
+        const { actions, channel } = this.props;
         const modalData = {
             modalId: ModalIdentifiers.EDIT_CHANNEL_HEADER,
             dialogType: EditChannelHeaderModal,
-            dialogProps: {channel},
+            dialogProps: { channel },
         };
 
         actions.openModal(modalData);
@@ -205,22 +205,22 @@ class ChannelHeader extends React.PureComponent {
         const headerPopoverTextMeasurerRect = this.headerPopoverTextMeasurerRef.current.getBoundingClientRect();
         const announcementBarSize = 40;
         if (headerPopoverTextMeasurerRect.width > headerDescriptionRect.width || headerText.match(/\n{2,}/g)) {
-            this.setState({showChannelHeaderPopover: true, leftOffset: this.headerDescriptionRef.current.offsetLeft});
+            this.setState({ showChannelHeaderPopover: true, leftOffset: this.headerDescriptionRef.current.offsetLeft });
         }
 
-        this.setState({topOffset: (announcementBarSize * this.props.announcementBarCount)});
+        this.setState({ topOffset: (announcementBarSize * this.props.announcementBarCount) });
     }
 
     setPopoverOverlayWidth = () => {
         const headerDescriptionRect = this.headerDescriptionRef.current.getBoundingClientRect();
         const ellipsisWidthAdjustment = 10;
-        this.setState({popoverOverlayWidth: headerDescriptionRect.width + ellipsisWidthAdjustment});
+        this.setState({ popoverOverlayWidth: headerDescriptionRect.width + ellipsisWidthAdjustment });
     }
 
     handleFormattedTextClick = (e) => Utils.handleFormattedTextClick(e, this.props.currentRelativeTeamUrl);
 
     renderCustomStatus = () => {
-        const {customStatus} = this.props;
+        const { customStatus } = this.props;
         const isStatusSet = customStatus && (customStatus.text || customStatus.emoji);
         if (!(this.props.isCustomStatusEnabled && isStatusSet)) {
             return null;
@@ -258,7 +258,7 @@ class ChannelHeader extends React.PureComponent {
             teammateNameDisplaySetting,
             isLegacySidebar,
         } = this.props;
-        const {formatMessage} = this.props.intl;
+        const { formatMessage } = this.props.intl;
         const ariaLabelChannelHeader = Utils.localizeMessage('accessibility.sections.channelHeader', 'channel header region');
 
         let hasGuestsText = '';
@@ -281,7 +281,7 @@ class ChannelHeader extends React.PureComponent {
         ) {
             // Use an empty div to make sure the header's height stays constant
             return (
-                <div className='channel-header'/>
+                <div className='channel-header' />
             );
         }
 
@@ -290,7 +290,7 @@ class ChannelHeader extends React.PureComponent {
         let channelTitle = channel.display_name;
         let archivedIcon = null;
         if (channelIsArchived) {
-            archivedIcon = (<ArchiveIcon className='icon icon__archive icon channel-header-archived-icon svg-text-color'/>);
+            archivedIcon = (<ArchiveIcon className='icon icon__archive icon channel-header-archived-icon svg-text-color' />);
         }
         let sharedIcon = null;
         if (channel.shared) {
@@ -324,7 +324,7 @@ class ChannelHeader extends React.PureComponent {
             channelTitle = (
                 <React.Fragment>
                     {channelTitle}
-                    <GuestBadge show={Utils.isGuest(dmUser)}/>
+                    <GuestBadge show={Utils.isGuest(dmUser)} />
                 </React.Fragment>
             );
         }
@@ -358,7 +358,7 @@ class ChannelHeader extends React.PureComponent {
                     <React.Fragment key={user.id}>
                         {index > 0 && ', '}
                         {displayName}
-                        <GuestBadge show={Utils.isGuest(user)}/>
+                        <GuestBadge show={Utils.isGuest(user)} />
                     </React.Fragment>
                 );
             });
@@ -408,7 +408,7 @@ class ChannelHeader extends React.PureComponent {
         if (rhsState === RHSStates.CHANNEL_FILES) {
             channelFilesIconClass += ' channel-header__icon--active';
         }
-        const channelFilesIcon = <i className='icon icon-file-document-outline'/>;
+        const channelFilesIcon = <i className='icon icon-file-document-outline' />;
 
         let pinnedIconClass = 'channel-header__icon channel-header__icon--wide channel-header__icon--left';
         if (rhsState === RHSStates.PIN) {
@@ -442,7 +442,7 @@ class ChannelHeader extends React.PureComponent {
                     id='header-popover'
                     popoverStyle='info'
                     popoverSize='lg'
-                    style={{maxWidth: `${this.state.popoverOverlayWidth}px`, transform: `translate(${this.state.leftOffset}px, ${this.state.topOffset}px)`}}
+                    style={{ maxWidth: `${this.state.popoverOverlayWidth}px`, transform: `translate(${this.state.leftOffset}px, ${this.state.topOffset}px)` }}
                     placement='bottom'
                     className={classNames(['channel-header__popover',
                         {
@@ -499,7 +499,7 @@ class ChannelHeader extends React.PureComponent {
                         className='header-description__text'
                         onClick={this.handleFormattedTextClick}
                         onMouseOver={() => this.showChannelHeaderPopover(headerText)}
-                        onMouseOut={() => this.setState({showChannelHeaderPopover: false})}
+                        onMouseOut={() => this.setState({ showChannelHeaderPopover: false })}
                         ref={this.headerDescriptionRef}
                     >
 
@@ -510,7 +510,7 @@ class ChannelHeader extends React.PureComponent {
                             target={this.headerDescriptionRef.current}
                             ref={this.headerOverlayRef}
                             onEnter={this.setPopoverOverlayWidth}
-                            onHide={() => this.setState({showChannelHeaderPopover: false})}
+                            onHide={() => this.setState({ showChannelHeaderPopover: false })}
                         >{popoverContent}</Overlay>
 
                         <Markdown
@@ -532,7 +532,9 @@ class ChannelHeader extends React.PureComponent {
                             >
                                 <FormattedMessage
                                     id='channel_header.addChannelHeader'
-                                    defaultMessage='Add a channel description'
+                                    //defaultMessage='Add a channel description'
+                                    defaultMessage='Add your own channel description'
+
                                 />
                                 <FormattedMessage
                                     id='channel_header.editLink'
@@ -646,7 +648,7 @@ class ChannelHeader extends React.PureComponent {
                         className={'style--none color--link channel-header__favorites ' + (this.props.isFavorite ? 'active' : 'inactive')}
                         aria-label={ariaLabel}
                     >
-                        <i className={'icon ' + (this.props.isFavorite ? 'icon-star' : 'icon-star-outline')}/>
+                        <i className={'icon ' + (this.props.isFavorite ? 'icon-star' : 'icon-star-outline')} />
                     </button>
                 </OverlayTrigger>
             );
@@ -673,9 +675,9 @@ class ChannelHeader extends React.PureComponent {
                         id='toggleMute'
                         onClick={this.unmute}
                         className={'style--none color--link channel-header__mute inactive'}
-                        aria-label={formatMessage({id: 'generic_icons.muted', defaultMessage: 'Muted Icon'})}
+                        aria-label={formatMessage({ id: 'generic_icons.muted', defaultMessage: 'Muted Icon' })}
                     >
-                        <i className={'icon icon-bell-off-outline'}/>
+                        <i className={'icon icon-bell-off-outline'} />
                     </button>
                 </OverlayTrigger>
             );
@@ -690,7 +692,7 @@ class ChannelHeader extends React.PureComponent {
                     >
                         <button
                             className={`channel-header__trigger style--none ${this.state.titleMenuOpen ? 'active' : ''}`}
-                            aria-label={formatMessage({id: 'channel_header.menuAriaLabel', defaultMessage: 'Channel Menu'}).toLowerCase()}
+                            aria-label={formatMessage({ id: 'channel_header.menuAriaLabel', defaultMessage: 'Channel Menu' }).toLowerCase()}
                         >
                             <strong
                                 role='heading'
@@ -707,11 +709,11 @@ class ChannelHeader extends React.PureComponent {
                             <span
                                 id='channelHeaderDropdownIcon'
                                 className='icon icon-chevron-down header-dropdown-chevron-icon'
-                                aria-label={formatMessage({id: 'generic_icons.dropdown', defaultMessage: 'Dropdown Icon'}).toLowerCase()}
+                                aria-label={formatMessage({ id: 'generic_icons.dropdown', defaultMessage: 'Dropdown Icon' }).toLowerCase()}
                             />
                         </button>
                     </div>
-                    <ChannelHeaderDropdown/>
+                    <ChannelHeaderDropdown />
                 </MenuWrapper>
                 {toggleFavorite}
             </React.Fragment>
@@ -733,7 +735,7 @@ class ChannelHeader extends React.PureComponent {
                             {channelTitle}
                         </span>
                     </strong>
-                    <BotBadge className='badge-popoverlist'/>
+                    <BotBadge className='badge-popoverlist' />
                     {toggleFavorite}
                 </div>
             );
@@ -752,8 +754,7 @@ class ChannelHeader extends React.PureComponent {
                 <div className='flex-parent'>
                     <div className='flex-child'>
                         <div
-                            // id='channelHeaderInfo'
-                            id='channelHeaderInfoChange'
+                            id='channelHeaderInfo'
                             className='channel-header__info'
                         >
                             <div
@@ -771,7 +772,7 @@ class ChannelHeader extends React.PureComponent {
                         channel={channel}
                         channelMember={channelMember}
                     />
-                    <RHSSearchNav/>
+                    <RHSSearchNav />
                 </div>
             </div>
         );
